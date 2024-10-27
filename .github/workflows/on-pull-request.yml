@@ -17,10 +17,6 @@ jobs:
       - name: Set Target to wasm32-unknown-unknown
         run: rustup target add wasm32-unknown-unknown
 
-      - name: Install Stellar
-        run: |
-          cargo install --locked stellar-cli --features opt
-
       - name: Build
         run: |
           cargo build --target wasm32-unknown-unknown
