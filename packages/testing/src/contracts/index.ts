@@ -1,0 +1,1 @@
+export { GreetingContract } from "./greeting";
