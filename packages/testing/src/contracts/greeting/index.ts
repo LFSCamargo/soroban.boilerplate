@@ -6,8 +6,15 @@ import {
   GreetingContractInputTypes,
   GreetingContractOutputTypes,
 } from "./types";
+import { uploadAndDeploy as uploadAndDeployGreeting } from "./deploy";
+
+export { uploadAndDeployGreeting };
 
 export class GreetingContract extends ContractEngine {
+  static contractWASMPath =
+    __dirname +
+    "/../../../../../target/wasm32-unknown-unknown/release/greeting_contract.wasm";
+
   constructor(args: ContractEngineConstructorArgs) {
     super(args);
   }

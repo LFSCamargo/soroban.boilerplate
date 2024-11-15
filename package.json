@@ -4,6 +4,9 @@
   "private": true,
   "author": "LFSCamargo",
   "license": "ISC",
+  "scripts": {
+    "test": "pnpm run --filter testing test"
+  },
   "devDependencies": {
     "@eslint/js": "^9.14.0",
     "eslint": "^9.14.0",

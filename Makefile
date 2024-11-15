@@ -23,3 +23,7 @@ fmt:
 # Lint using cargo linter
 lint:
 	cargo fmt --all --check
+
+# Build target using the Soroban contract build command
+bindings:
+	soroban contract inspect --wasm ./target/wasm32-unknown-unknown/release/greeting_contract.wasm
