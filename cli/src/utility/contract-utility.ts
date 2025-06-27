@@ -3,7 +3,7 @@ import fs from "fs";
 import debug from "debug";
 import { getRootDirectory } from "./directory-utility";
 
-const log = debug("deploy-cli:contract-helpers");
+const log = debug("cli:contract-utility");
 
 export function getServer(url: string) {
   if (!url) {
