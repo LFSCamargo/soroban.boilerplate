@@ -66,6 +66,18 @@
                         "key": {
                           "vec": [
                             {
+                              "symbol": "DefaultGreeting"
+                            }
+                          ]
+                        },
+                        "val": {
+                          "string": "Hello"
+                        }
+                      },
+                      {
+                        "key": {
+                          "vec": [
+                            {
                               "symbol": "Greeting"
                             },
                             {

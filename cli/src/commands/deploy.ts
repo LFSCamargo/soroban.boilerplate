@@ -15,6 +15,7 @@ interface DeployOptions {
   deployer: string;
   contractWasm: string;
   network: string;
+  constructorArgs: StellarSDK.xdr.ScVal[];
 }
 
 export const command: string = "deploy";
@@ -55,9 +56,17 @@ export const builder: CommandBuilder<DeployOptions, DeployOptions> = (yargs) =>
         coerce: (args) => {
           // Convert string arguments to Stellar SCVal format
           return args.map((arg: unknown) => {
-            return StellarSDK.nativeToScVal(args, {
-              type: typeof arg,
-            });
+            try {
+              let argument = StellarSDK.Address.fromString(arg as string);
+
+              return StellarSDK.nativeToScVal(argument, {
+                type: "address",
+              });
+            } catch (error) {
+              return StellarSDK.nativeToScVal(arg, {
+                type: typeof arg,
+              });
+            }
           });
         },
       },
@@ -77,7 +86,7 @@ export const builder: CommandBuilder<DeployOptions, DeployOptions> = (yargs) =>
 export const handler = async (
   argv: Arguments<DeployOptions>
 ): Promise<void> => {
-  const { contractWasm, deployer } = argv as DeployOptions;
+  const { contractWasm, deployer, constructorArgs } = argv as DeployOptions;
 
   log(`Deploying contract from WASM file: ${contractWasm}`);
 
@@ -93,7 +102,12 @@ export const handler = async (
 
   log("WASM uploaded successfully. Building transaction to deploy contract...");
 
-  const address = await deployContract(response, deployer, networkUrl);
+  const address = await deployContract(
+    response,
+    deployer,
+    networkUrl,
+    constructorArgs
+  );
 
   log(`Contract deployed at address: ${address}`);
 

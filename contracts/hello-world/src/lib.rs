@@ -10,23 +10,28 @@ pub struct Greeting {
 
 #[contracttype]
 pub enum DataKey {
+  Owner,
+  DefaultGreeting,
   Greeting(Address),
 }
 
 #[contract]
 pub struct Contract;
 
-// This is a sample contract. Replace this placeholder with your own contract logic.
-// A corresponding test example is available in `test.rs`.
-//
-// For comprehensive examples, visit <https://github.com/stellar/soroban-examples>.
-// The repository includes use cases for the Stellar ecosystem, such as data storage on
-// the blockchain, token swaps, liquidity pools, and more.
-//
-// Refer to the official documentation:
-// <https://developers.stellar.org/docs/build/smart-contracts/overview>.
 #[contractimpl]
 impl Contract {
+  pub fn __constructor(env: Env, owner: Address, default_greeting: String) {
+    env
+      .storage()
+      .instance()
+      .set(&DataKey::Owner, &owner.clone());
+
+    env
+      .storage()
+      .instance()
+      .set(&DataKey::DefaultGreeting, &default_greeting);
+  }
+
   pub fn customize_greeting(
     env: Env,
     to: Address,
@@ -49,13 +54,19 @@ impl Contract {
   }
 
   pub fn hello(env: Env, to: Address) -> Greeting {
+    let default_greeting: String = env
+      .storage()
+      .instance()
+      .get(&DataKey::DefaultGreeting)
+      .expect("Default greeting not set");
+
     let greeting = env
       .storage()
       .instance()
       .get(&DataKey::Greeting(to.clone()))
       .unwrap_or(Greeting {
         address: to.clone(),
-        greeting: String::from_str(&env, "Hello"),
+        greeting: default_greeting.clone(),
       });
 
     greeting
