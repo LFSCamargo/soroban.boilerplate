@@ -75,8 +75,13 @@ make build
 Then, deploy it using the CLI:
 
 ```bash
-pnpm deploy --network testnet --deployer <your_secret_key> --contractWasm ./contracts/hello_world/target/wasm32v1-none/release/hello_world.wasm
+pnpm deploy --network <desired_network> # Specify the network you want to deploy to, either testnet or mainnet
+ --deployer <your_secret_key> # A Stellar account secret key that looks like this `SBX5Q2Z7Y3F6V4Z5X6Y7Z8A9B0C1D2E3F4G5H6I7J8K9L0M1N2O3P4Q5R6S7T8U9`
+ --contractWasm ./contracts/hello_world/target/wasm32v1-none/release/hello_world.wasm
+ --constructorArgs <first_argument> # In this case we are going to pass the address of the owner
+ --constructorArgs <second_argument> # In this case we are going to pass the default greeting
 ```
+
 ## Contracts
 
 The `hello_world` contract is a simple example that can be found in the `contracts/hello_world` directory. It includes a basic implementation of a Soroban contract written in Rust.
@@ -99,10 +104,8 @@ To test the project, run:
 
 ```bash
 make test
-``` 
+```
 
 ## Code Quality Github Workflow
 
 This repository includes a GitHub Actions workflow for code quality checks. The workflow is defined in `.github/workflows/code-quality.yml` and runs on every push and pull request. It checks for tests, and compiles the Rust contracts.
-
-
